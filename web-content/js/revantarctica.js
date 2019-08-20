@@ -1,10 +1,10 @@
 let dbObject = {
-    name: '',
+    nombre: '',
     client:'',
     techTrack:''
 }
 
-document.getElementById('header').innerText = "YOUR TITLE GOES HERE";
+document.getElementById('header').innerText = "Revature Antarctica: Cold Storage Edition";
 
 //this assumes your cloud function will return a value named address with the address to an image, in a cloud storage bucket
 async function setUpImages(){
@@ -14,7 +14,7 @@ async function setUpImages(){
     images.push(document.getElementById('carousel-3'))
     images.forEach(async (value, index)=>{
         //index is the numbered image in the carousel if that matters to you
-        let response = await fetch("YOURCLOUDFUNCTION FOR GETTING AN IMAGE")
+        let response = await fetch("YOUR CLOUD FUNCTION FOR GETTING AN IMAGE")
         
     if(response.status <200 || response.status > 299){
         value.src = "images/penguins.jpg"
@@ -47,24 +47,14 @@ function calcSubmit(event){
 
 
 async function buildTable (){
-    // let objectResponse = await fetch("YOUR CLOUD FUNCTION URL FOR GETTING DATA")
-    // if(objectResponse.status <200 || objectResponse.status >299){
-    //     let error =document.createElement('p')
-    //     error.innerText = "Fetch Failed"
-    //     document.getElementById('footer-table').appendChild(error)
-    // }else {
-        //let objectList = await objectResponse.json()
-        let objectList = [
-            {
-                name: 'Ryan',
-                client:'Google',
-                techTrack:'GCP'
-            },{
-                name: 'Felix',
-                client:'Amazon',
-                techTrack:'GCP'
-            }
-        ]
+    let objectResponse = await fetch("YOUR CLOUD FUNCTION URL FOR GETTING DATA")
+    if(objectResponse.status <200 || objectResponse.status >299){
+        let error =document.createElement('p')
+        error.innerText = "Fetch Failed"
+        document.getElementById('footer-table').appendChild(error)
+    }else {
+        let objectList = await objectResponse.body.json()
+       
         let headRow = document.createElement('tr')
         document.getElementById('object-table-head').appendChild(headRow)
         for(key in dbObject){
@@ -93,7 +83,7 @@ async function buildTable (){
             }
         })
         
-    //}
+    }
 }
 
 function buildForm(){
