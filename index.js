@@ -19,20 +19,19 @@ app.use('/', (req, res, next)=>{
     
 })
 app.use(express.static(path.join(__dirname, '/web-content')))
-// let options = {
-//     key: fs.readFileSync(process.env['SERVER_KEY']),
-//     cert: fs.readFileSync(process.env['SERVER_CERT']),
-//     passphrase: fs.readFileSync(process.env['SERVER_PASS']),
-// }
+let options = {
+    key: fs.readFileSync(process.env['SERVER_KEY']),
+    cert: fs.readFileSync(process.env['SERVER_CERT']),
+    passphrase: fs.readFileSync(process.env['SERVER_PASS']),
+}
 
 
-app.listen(9090, ()=>{
-    console.log('Started on 9090 no cert');
+// app.listen(9090, ()=>{
+//     console.log('Started on 9090 no cert');
+// })
+
+https.createServer(options,app).listen(9090, ()=>{
+    console.log('App Started on 9090');
     
 })
-
-// https.createServer(options,app).listen(9090, ()=>{
-//     console.log('App Started on 9090');
-    
-// })
 

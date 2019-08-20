@@ -1,5 +1,5 @@
 let dbObject = {
-    nombre: '',
+    name: '',
     client:'',
     techTrack:''
 }
@@ -26,7 +26,7 @@ async function setUpImages(){
 }
 setUpImages()
 
-document.getElementById('calc-label').innerText = "YOU CALC LABEL TEXT"
+document.getElementById('calc-label').innerText = "Call me ;)"
 
 document.getElementById('calc-input').type = 'text' || "YOUR INPUT TYPE, REPLACE TEXT"
 
@@ -47,14 +47,24 @@ function calcSubmit(event){
 
 
 async function buildTable (){
-    let objectResponse = await fetch("YOUR CLOUD FUNCTION URL FOR GETTING DATA")
-    if(objectResponse.status <200 || objectResponse.status >299){
-        let error =document.createElement('p')
-        error.innerText = "Fetch Failed"
-        document.getElementById('footer-table').appendChild(error)
-    }else {
-        let objectList = await objectResponse.body.json()
-       
+    // let objectResponse = await fetch("YOUR CLOUD FUNCTION URL FOR GETTING DATA")
+    // if(objectResponse.status <200 || objectResponse.status >299){
+    //     let error =document.createElement('p')
+    //     error.innerText = "Fetch Failed"
+    //     document.getElementById('footer-table').appendChild(error)
+    // }else {
+        //let objectList = await objectResponse.json()
+        let objectList = [
+            {
+                name: 'Ryan',
+                client:'Google',
+                techTrack:'GCP'
+            },{
+                name: 'Felix',
+                client:'Amazon',
+                techTrack:'GCP'
+            }
+        ]
         let headRow = document.createElement('tr')
         document.getElementById('object-table-head').appendChild(headRow)
         for(key in dbObject){
@@ -83,7 +93,7 @@ async function buildTable (){
             }
         })
         
-    }
+    //}
 }
 
 function buildForm(){
