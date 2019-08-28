@@ -1,7 +1,7 @@
 let dbObject = {
-    nombre: '',
-    client:'',
-    techTrack:''
+    name:'',
+    age:0,
+    degree:''
 }
 
 document.getElementById('header').innerText = "Revature Antarctica: Cold Storage Edition";
@@ -13,27 +13,28 @@ async function setUpImages(){
     images.push(document.getElementById('carousel-2'))
     images.push(document.getElementById('carousel-3'))
     images.forEach(async (value, index)=>{
-        //index is the numbered image in the carousel if that matters to you
-        let bucket_url = `https://us-central1-gcpdemons.cloudfunctions.net/get-bucket-image?index=${index}`
+	let bucket_url = `https://us-central1-gcpdemons.cloudfunctions.net/get-bucket-image?index=${index}`
         let response = await fetch(bucket_url)
-        console.log(response)
-        if(response.status <200 || response.status > 299){
-            value.src = "images/penguins.jpg"
-        } else {
-            data =  await response.json()
-            value.src = data["image"]
-        }
+        
+    if(response.status <200 || response.status > 299){
+        value.src = "images/penguins.jpg"
+    } else {
+        data =  await response.json()
+        value.src = data["image"]
+    }
     })
 }
 setUpImages()
 
-document.getElementById('calc-label').innerText = "Call me ;)"
+document.getElementById('calc-label').innerText = "Input city to get distance from Antarctica"
 
-document.getElementById('calc-input').type = 'text' || "YOUR INPUT TYPE, REPLACE TEXT"
+document.getElementById('calc-input').type = 'text'
 
-function calcSubmit(event){
+async function calcSubmit(event){
     event.preventDefault()
-    fetch("YOUR CALC CLOUD FUNCTION URL", {
+    let city = document.getElementById('calc-input').value
+    let distance_url = `https://us-central1-gcpdemons.cloudfunctions.net/distance_from_antarctica?city=${city}`
+    let result = await fetch(distance_url, {
         method: 'POST',
         body: JSON.stringify(document.getElementById('calc-input').value)
     })
@@ -42,19 +43,23 @@ function calcSubmit(event){
     } else {
         document.getElementById('calc-input').value = ''
     }
-
+    let data = await result.json()
+    let div = document.getElementById('calc-container')
+    let display = document.createElement('p')
+    display.innerText = data["message"]
+    div.appendChild(display)
 }
 
 
 
 async function buildTable (){
-    let objectResponse = await fetch("YOUR CLOUD FUNCTION URL FOR GETTING DATA")
+    let objectResponse = await fetch("https://us-central1-gcpdemons.cloudfunctions.net/get-data")
     if(objectResponse.status <200 || objectResponse.status >299){
         let error =document.createElement('p')
         error.innerText = "Fetch Failed"
         document.getElementById('footer-table').appendChild(error)
     }else {
-        let objectList = await objectResponse.body.json()
+        let objectList = await objectResponse.json()
        
         let headRow = document.createElement('tr')
         document.getElementById('object-table-head').appendChild(headRow)
@@ -123,10 +128,11 @@ function createObject(event){
         }
     }
     
-    fetch('YOUR CLOUD FUNCTION URL FOR CREATING A NEW OBJECT',{
+    let result = fetch('https://us-central1-gcpdemons.cloudfunctions.net/post-data',{
         method: 'POST',
         body: JSON.stringify(newObj)
     })
+    alert("Data: " + result)
 }
 
 
