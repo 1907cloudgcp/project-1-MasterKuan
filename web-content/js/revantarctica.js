@@ -1,6 +1,6 @@
 let dbObject = {
     name:'',
-    age:0,
+    age:'',
     degree:''
 }
 
@@ -128,14 +128,11 @@ function createObject(event){
         }
     }
     
-    let result = fetch('https://us-central1-gcpdemons.cloudfunctions.net/post-data',{
+    fetch('https://us-central1-gcpdemons.cloudfunctions.net/post-data',{
         method: 'POST',
         body: JSON.stringify(newObj)
     })
-    alert("Data: " + result)
 }
-
-
 
 buildTable()
 buildForm()
