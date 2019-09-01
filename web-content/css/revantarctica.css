@@ -11,18 +11,21 @@ body{
 }
 
 .header-container{
-    display: flex
+    display: flex;
+	padding: 10px;
 }
 
 .carousel{
     display: flex;
     justify-content: center;
+	padding: 10px;
     min-width: 70vw;
     max-width: 70vw;
 }
 .footer-container{
     display: flex;
     justify-content: space-between;
+	padding: 10px;
     width:85vw;
 }
 
