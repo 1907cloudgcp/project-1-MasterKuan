@@ -1,7 +1,7 @@
 let dbObject = {
-    name:'',
-    age:'',
-    degree:''
+    Name:'',
+    Age:'',
+    Degree:''
 }
 
 document.getElementById('header').innerText = "Revature Antarctica: Cold Storage Edition";
@@ -92,6 +92,18 @@ async function buildTable (){
     }
 }
 
+async function destroyTable(){
+	let headRow = document.getElementById('object-table-head')
+	while (headRow.firstChild){
+		headRow.removeChild(headRow.firstChild)
+	}
+	
+	let tbody = document.getElementById('object-table-body')
+	while (tbody.firstChild){
+		tbody.removeChild(tbody.firstChild)
+	}
+}
+
 function buildForm(){
     for(key in dbObject){
         let div = document.createElement('div')
@@ -114,7 +126,7 @@ function buildForm(){
 
 }
 
-function createObject(event){
+async function createObject(event){
     event.preventDefault()
     console.log(event);
     let newObj = {}
@@ -128,10 +140,19 @@ function createObject(event){
         }
     }
     
-    fetch('https://us-central1-gcpdemons.cloudfunctions.net/post-data',{
+    let result = await fetch('https://us-central1-gcpdemons.cloudfunctions.net/post-data',{
         method: 'POST',
         body: JSON.stringify(newObj)
     })
+	
+	if(result.status <200 || result.status >299){
+        alert("Error: " + result.status + "response")
+    }else{
+		alert("Success!")
+	}
+	
+	await destroyTable()
+	await buildTable()
 }
 
 buildTable()
